@@ -2332,7 +2332,9 @@ class AlterTableStatementSegment(BaseSegment):
                         "DROP",
                     ),
                     "CONSTRAINT",
+                    Sequence("IF", "EXISTS", optional=True),
                     Ref("ObjectReferenceSegment"),
+                    Ref("RelationalIndexOptionsSegment", optional=True),
                 ),
                 Sequence(
                     "DROP",
@@ -2348,6 +2350,11 @@ class AlterTableStatementSegment(BaseSegment):
                 Sequence(
                     OneOf("ENABLE", "DISABLE"),
                     Ref.keyword("CHANGE_TRACKING"),
+                ),
+                Sequence(
+                    OneOf("ENABLE", "DISABLE"),
+                    Ref.keyword("TRIGGER"),
+                    Ref("TableReferenceSegment"),
                 ),
             ),
         ),
