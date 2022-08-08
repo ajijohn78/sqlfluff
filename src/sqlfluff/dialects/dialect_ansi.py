@@ -1101,7 +1101,7 @@ class FunctionNameSegment(BaseSegment):
         # Project name, schema identifier, etc.
         AnyNumberOf(
             Sequence(
-                Ref("SingleIdentifierGrammar"),
+                Ref("SingleIdentifierGrammar", optional=True),
                 Ref("DotSegment"),
             ),
         ),
