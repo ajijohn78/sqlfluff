@@ -171,7 +171,7 @@ tsql_dialect.patch_lexer_matchers(
             ),
         ),
         RegexLexer(
-            "code", r"[0-9a-zA-Z_#@]+", CodeSegment
+            "code", r"[0-9А-яa-zA-Z_#@]+", CodeSegment
         ),  # overriding to allow hash mark and at-sign in code
     ]
 )
@@ -226,7 +226,7 @@ tsql_dialect.replace(
     NakedIdentifierSegment=SegmentGenerator(
         # Generate the anti template from the set of reserved keywords
         lambda dialect: RegexParser(
-            r"[A-Z_][A-Z0-9_@$#]*",
+            r"[А-яA-Z_][А-яA-Z0-9_@$#]*",
             CodeSegment,
             name="naked_identifier",
             type="identifier",
@@ -263,7 +263,7 @@ tsql_dialect.replace(
         Ref("SystemVariableSegment"),
     ),
     ParameterNameSegment=RegexParser(
-        r"@[A-Za-z0-9_]+", CodeSegment, name="parameter", type="parameter"
+        r"@[А-яA-Za-z0-9_]+", CodeSegment, name="parameter", type="parameter"
     ),
     FunctionParameterGrammar=Sequence(
         Ref("ParameterNameSegment", optional=True),
