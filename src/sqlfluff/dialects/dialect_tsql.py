@@ -3097,6 +3097,17 @@ class OrderByClauseSegment(BaseSegment):
                 OneOf("ASC", "DESC", optional=True),
             ),
         ),
+        Sequence(
+            "OFFSET",
+            Ref("ExpressionSegment"),
+            OneOf("ROW", "ROWS"),
+            "FETCH",
+            OneOf("FIRST", "NEXT"),
+            Ref("ExpressionSegment"),
+            OneOf("ROW", "ROWS"),
+            "ONLY",
+            optional=True,
+        ),
         Dedent,
     )
 

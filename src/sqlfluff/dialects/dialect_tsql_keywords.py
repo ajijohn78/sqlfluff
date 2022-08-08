@@ -362,6 +362,7 @@ UNRESERVED_KEYWORDS = [
     "OBJECT",
     "OFFSET",
     "ONLINE",
+    "ONLY",
     "OPTIMIZE",
     "OPTIMIZE_FOR_SEQUENTIAL_KEY",
     "OUT",
