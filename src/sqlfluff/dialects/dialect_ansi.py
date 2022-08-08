@@ -3452,6 +3452,7 @@ class StatementSegment(BaseSegment):
         Ref("DropRoleStatementSegment"),
         Ref("AlterTableStatementSegment"),
         Ref("CreateSchemaStatementSegment"),
+        Ref("AlterAuthorizationStatementSegment"),
         Ref("SetSchemaStatementSegment"),
         Ref("DropSchemaStatementSegment"),
         Ref("DropTypeStatementSegment"),
@@ -3773,3 +3774,14 @@ class LocalAliasSegment(BaseSegment):
 
     type = "local_alias_segment"
     match_grammar: Matchable = Nothing()
+
+
+class AlterAuthorizationStatementSegment(BaseSegment):
+    """A `ALTER AUTHORIZATION` statement.
+
+
+    https://docs.microsoft.com/en-us/sql/t-sql/statements/alter-authorization-transact-sql?view=sql-server-ver16
+.
+    """
+
+    type = "alter_authorization_statement"

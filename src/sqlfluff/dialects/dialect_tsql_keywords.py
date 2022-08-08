@@ -479,4 +479,17 @@ UNRESERVED_KEYWORDS = [
     "XLOCK",
     "XML",
     "ZONE",
+    "ASSEMBLY",
+    "ASYMMETRIC",
+    "AVAILABILITY",
+    "CERTIFICATE",
+    "CONTRACT",
+    "ENDPOINT",
+    "FULLTEXT",
+    "MESSAGE",
+    "REMOTE",
+    "ROUTE",
+    "SEARCH",
+    "SERVICE",
+    "SYMMETRIC"
 ]

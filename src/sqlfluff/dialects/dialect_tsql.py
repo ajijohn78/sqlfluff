@@ -4352,3 +4352,53 @@ class ColumnDefinitionSegment(BaseSegment):
         ),
     )
 
+
+class AlterAuthorizationStatementSegment(BaseSegment):
+    """A `ALTER AUTHORIZATION` statement.
+
+
+    https://docs.microsoft.com/en-us/sql/t-sql/statements/alter-authorization-transact-sql?view=sql-server-ver16
+.
+    """
+
+    type = "alter_authorization_statement"
+    match_grammar = Sequence(
+        "ALTER",
+        "AUTHORIZATION",
+        "ON",
+        Sequence(
+            OneOf(
+                "OBJECT",
+                "ASSEMBLY",
+                Sequence("ASYMMETRIC", "KEY"),
+                Sequence("AVAILABILITY", "GROUP"),
+                "CERTIFICATE",
+                "CONTRACT",
+                "TYPE",
+                "DATABASE",
+                "ENDPOINT",
+                Sequence("FULLTEXT", "CATALOG"),
+                Sequence("FULLTEXT", "STOPLIST"),
+                Sequence("MESSAGE", "TYPE"),
+                Sequence("REMOTE", "SERVICE", "BINDING"),
+                "ROLE",
+                "ROUTE",
+                "SCHEMA",
+                Sequence("SEARCH", "PROPERTY", "LIST"),
+                Sequence("SERVER", "ROLE"),
+                "SERVICE",
+                Sequence("SYMMETRIC", "KEY"),
+                Sequence("XML", "SCHEMA", "COLLECTION"),
+            ),
+            Ref("CastOperatorSegment"),
+            optional=True,
+        ),
+        Sequence(
+            Ref("ObjectReferenceSegment"),
+            "TO",
+            OneOf(
+                Ref("ObjectReferenceSegment"),
+                Sequence("SCHEMA", "OWNER"),
+            ),
+        ),
+    )
