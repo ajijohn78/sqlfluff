@@ -1318,7 +1318,7 @@ class CreateSequenceOptionsSegment(BaseSegment):
         ),
         Sequence(
             "CACHE",
-            Ref("NumericLiteralSegment"),
+            Ref("NumericLiteralSegment", optional=True),
         ),
         Sequence(
             "NO",
