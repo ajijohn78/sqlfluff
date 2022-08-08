@@ -1200,7 +1200,9 @@ class DeclareStatementSegment(BaseSegment):
                             Ref("EqualsSegment"),
                             OneOf(
                                 Ref("ExpressionSegment"),
-                                Ref("NextValueSequenceSegment"),
+                                OptionallyBracketed(
+                                    Ref("NextValueSequenceSegment"),
+                                ),
                             ),
                             optional=True,
                         ),
@@ -1792,7 +1794,9 @@ class SetStatementSegment(BaseSegment):
                 Sequence(
                     Ref("ParameterNameSegment"),
                     Ref("AssignmentOperatorSegment"),
-                    Ref("NextValueSequenceSegment"),
+                    OptionallyBracketed(
+                        Ref("NextValueSequenceSegment"),
+                    ),
                 ),
             ),
         ),
