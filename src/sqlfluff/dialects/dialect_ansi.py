@@ -528,7 +528,7 @@ ansi_dialect.add(
     FrameClauseUnitGrammar=OneOf("ROWS", "RANGE"),
     JoinTypeKeywordsGrammar=OneOf(
         "CROSS",
-        "INNER",
+        Sequence("INNER", Ref.keyword("LOOP", optional=True)),
         Sequence(
             OneOf(
                 "FULL",
