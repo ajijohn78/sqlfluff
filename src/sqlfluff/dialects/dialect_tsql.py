@@ -4226,7 +4226,7 @@ class FetchCursorStatementSegment(BaseSegment):
     match_grammar: Matchable = Sequence(
         "FETCH",
         OneOf("NEXT", "PRIOR", "FIRST", "LAST", optional=True),
-        "FROM",
+        Sequence("FROM", optional=True),
         Ref("CursorNameGrammar"),
         Sequence("INTO", Delimited(Ref("ParameterNameSegment")), optional=True),
     )
