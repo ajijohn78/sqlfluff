@@ -1596,7 +1596,7 @@ class CreateFunctionStatementSegment(BaseSegment):
             optional=True,
         ),
         Ref("FunctionOptionSegment", optional=True),
-        "AS",
+        Ref.keyword("AS", optional=True),
         Ref("ProcedureDefinitionGrammar"),
     )
 
