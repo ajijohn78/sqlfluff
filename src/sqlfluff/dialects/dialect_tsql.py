@@ -97,12 +97,12 @@ tsql_dialect.insert_lexer_matchers(
     [
         RegexLexer(
             "atsign",
-            r"[@][a-zA-Z0-9_]+",
+            r"[@][А-яa-zA-Z0-9_]+",
             CodeSegment,
         ),
         RegexLexer(
             "var_prefix",
-            r"[$][a-zA-Z0-9_]+",
+            r"[$][А-яa-zA-Z0-9_]+",
             CodeSegment,
         ),
         RegexLexer(
@@ -114,7 +114,7 @@ tsql_dialect.insert_lexer_matchers(
         RegexLexer("single_quote_with_n", r"N'([^']|'')*'", CodeSegment),
         RegexLexer(
             "hash_prefix",
-            r"[#][#]?[a-zA-Z0-9_]+",
+            r"[#][#]?[А-яa-zA-Z0-9_]+",
             CodeSegment,
         ),
     ],
