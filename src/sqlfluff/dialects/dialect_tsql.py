@@ -1242,12 +1242,15 @@ class DeclareCursorStatementSegment(BaseSegment):
         Ref("NakedIdentifierSegment"),
         "CURSOR",
         OneOf("LOCAL", "GLOBAL", optional=True),
-        OneOf("FORWARD_ONLY", "SCROLL", optional=True),
-        OneOf("STATIC", "KEYSET", "DYNAMIC", "FAST_FORWARD", optional=True),
-        OneOf("READ_ONLY", "SCROLL_LOCKS", "OPTIMISTIC", optional=True),
-        Sequence("TYPE_WARNING", optional=True),
+        AnyNumberOf(
+            OneOf("FORWARD_ONLY", "SCROLL", optional=True),
+            OneOf("STATIC", "KEYSET", "DYNAMIC", "FAST_FORWARD", optional=True),
+            OneOf("READ_ONLY", "SCROLL_LOCKS", "OPTIMISTIC", optional=True),
+            Sequence("TYPE_WARNING", optional=True),
+            optional=True,
+        ),
         "FOR",
-        Ref("SelectStatementSegment"),
+        Ref("SelectableGrammar"),
     )
 
 
