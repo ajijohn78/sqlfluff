@@ -723,7 +723,14 @@ class WhereClauseSegment(BaseSegment):
     match_grammar = Sequence(
         "WHERE",
         Indent,
-        OptionallyBracketed(Ref("ExpressionSegment")),
+        OneOf(
+            Sequence(
+                Sequence("CURRENT", "OF"),
+                Ref.keyword("GLOBAL", optional=True),
+                Ref("ExpressionSegment"),
+            ),
+            OptionallyBracketed(Ref("ExpressionSegment")),
+        ),
         Dedent,
     )
 
@@ -1251,6 +1258,13 @@ class DeclareCursorStatementSegment(BaseSegment):
         ),
         "FOR",
         Ref("SelectableGrammar"),
+        Sequence(
+            Sequence("FOR", "UPDATE", "OF"),
+            Delimited(
+                Ref("SelectClauseElementSegment"),
+            ),
+            optional=True,
+        )
     )
 
 
