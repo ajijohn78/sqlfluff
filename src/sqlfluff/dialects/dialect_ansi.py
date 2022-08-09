@@ -532,7 +532,7 @@ ansi_dialect.add(
         Sequence(
             OneOf(
                 "FULL",
-                "LEFT",
+                Sequence("LEFT", Ref.keyword("LOOP", optional=True)),
                 "RIGHT",
             ),
             Ref.keyword("OUTER", optional=True),
