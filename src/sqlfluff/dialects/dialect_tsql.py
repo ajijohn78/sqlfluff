@@ -1207,9 +1207,7 @@ class DeclareStatementSegment(BaseSegment):
                             Ref("EqualsSegment"),
                             OneOf(
                                 Ref("ExpressionSegment"),
-                                OptionallyBracketed(
-                                    Ref("NextValueSequenceSegment"),
-                                ),
+                                Ref("NextValueSequenceSegment"),
                             ),
                             optional=True,
                         ),
@@ -1351,10 +1349,12 @@ class NextValueSequenceSegment(BaseSegment):
 
     type = "sequence_next_value"
     match_grammar = Sequence(
-        "NEXT",
-        "VALUE",
-        "FOR",
-        Ref("ObjectReferenceSegment"),
+        OptionallyBracketed(
+            "NEXT",
+            "VALUE",
+            "FOR",
+            Ref("ObjectReferenceSegment"),
+        )
     )
 
 
@@ -1797,6 +1797,7 @@ class SetStatementSegment(BaseSegment):
                     OneOf(
                         "ON",
                         "OFF",
+                        Ref("NextValueSequenceSegment"),
                         Sequence(
                             Ref("EqualsSegment"),
                             Ref("ExpressionSegment"),
@@ -1812,9 +1813,7 @@ class SetStatementSegment(BaseSegment):
                 Sequence(
                     Ref("ParameterNameSegment"),
                     Ref("AssignmentOperatorSegment"),
-                    OptionallyBracketed(
-                        Ref("NextValueSequenceSegment"),
-                    ),
+                    Ref("NextValueSequenceSegment"),
                 ),
             ),
         ),
