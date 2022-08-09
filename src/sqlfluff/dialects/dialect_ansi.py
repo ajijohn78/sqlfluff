@@ -1378,6 +1378,7 @@ class SelectClauseElementSegment(BaseSegment):
     match_grammar = OneOf(
         # *, blah.*, blah.blah.*, etc.
         Ref("WildcardExpressionSegment"),
+        Ref("CaseExpressionSegment"),
         Sequence(
             Ref("BaseExpressionElementGrammar"),
             Ref("AliasExpressionSegment", optional=True),
