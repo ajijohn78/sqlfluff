@@ -528,12 +528,33 @@ ansi_dialect.add(
     FrameClauseUnitGrammar=OneOf("ROWS", "RANGE"),
     JoinTypeKeywordsGrammar=OneOf(
         "CROSS",
-        Sequence("INNER", Ref.keyword("LOOP", optional=True)),
+        Sequence(
+            "INNER",
+            OneOf(
+                Ref.keyword("LOOP"),
+                Ref.keyword("HASH"),
+                optional=True
+            ),
+        ),
         Sequence(
             OneOf(
                 "FULL",
-                Sequence("LEFT", Ref.keyword("LOOP", optional=True)),
-                "RIGHT",
+                Sequence(
+                    "LEFT",
+                    OneOf(
+                        Ref.keyword("LOOP"),
+                        Ref.keyword("HASH"),
+                        optional=True
+                    ),
+                ),
+                Sequence(
+                    "RIGHT",
+                    OneOf(
+                        Ref.keyword("LOOP"),
+                        Ref.keyword("HASH"),
+                        optional=True
+                    ),
+                ),
             ),
             Ref.keyword("OUTER", optional=True),
         ),

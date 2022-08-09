@@ -2427,10 +2427,18 @@ class TableIndexSegment(BaseSegment):
             Sequence(
                 Sequence("UNIQUE", optional=True),
                 OneOf("CLUSTERED",
-                      #"NONCLUSTERED",
-                      Sequence("NONCLUSTERED", Ref.keyword("HASH", optional=True),),
-                      optional=True),
+                      Sequence(
+                          "NONCLUSTERED",
+                          Ref.keyword("HASH", optional=True),
+                      ),
+                      optional=True
+                ),
                 Ref("BracketedIndexColumnListGrammar"),
+                Sequence(
+                    "INCLUDE",
+                    Ref("BracketedColumnReferenceListGrammar"),
+                    optional=True,
+                ),
             ),
             Sequence("CLUSTERED", "COLUMNSTORE"),
             Sequence(
