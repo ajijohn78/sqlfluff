@@ -2489,9 +2489,15 @@ class IdentityGrammar(BaseSegment):
         # optional (seed, increment) e.g. (1, 1)
         Bracketed(
             Sequence(
-                Ref("NumericLiteralSegment"),
+                Sequence(
+                    Ref("NegativeSegment", optional=True),
+                    Ref("NumericLiteralSegment"),
+                ),
                 Ref("CommaSegment"),
-                Ref("NumericLiteralSegment"),
+                Sequence(
+                    Ref("NegativeSegment", optional=True),
+                    Ref("NumericLiteralSegment"),
+                ),
             ),
             optional=True,
         ),
