@@ -4274,6 +4274,16 @@ class ForXmlSegment(BaseSegment):
             "EXPLICIT",
             Sequence("PATH", Bracketed(Ref("QuotedLiteralSegment"), optional=True)),
         ),
+        Sequence(
+            Ref("CommaSegment"),
+            Delimited(
+                AnyNumberOf(
+                    "TYPE",
+                    "ROOT"
+                ),
+            ),
+            optional=True,
+        ),
     )
 
 

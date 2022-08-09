@@ -494,4 +494,5 @@ UNRESERVED_KEYWORDS = [
     "PAUSE",
     "ABORT",
     "UPDATE",
+    "ROOT",
 ]
