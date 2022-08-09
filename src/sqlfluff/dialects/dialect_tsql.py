@@ -3878,7 +3878,6 @@ class CreateTriggerStatementSegment(BaseSegment):
             optional=True,
         ),
         Delimited(
-            # "INSERT",
             AnyNumberOf(
                 "INSERT",
                 "UPDATE",
