@@ -1801,6 +1801,7 @@ class SetStatementSegment(BaseSegment):
                             Ref("EqualsSegment"),
                             Ref("ExpressionSegment"),
                         ),
+                        Ref("ExpressionSegment"),
                     ),
                 ),
                 Sequence(
@@ -3877,9 +3878,12 @@ class CreateTriggerStatementSegment(BaseSegment):
             optional=True,
         ),
         Delimited(
-            "INSERT",
-            "UPDATE",
-            "DELETE",
+            # "INSERT",
+            AnyNumberOf(
+                "INSERT",
+                "UPDATE",
+                "DELETE",
+            ),
             optional=True,
         ),
         Sequence("WITH", "APPEND", optional=True),
@@ -4421,4 +4425,23 @@ class AlterAuthorizationStatementSegment(BaseSegment):
                 Sequence("SCHEMA", "OWNER"),
             ),
         ),
+    )
+
+
+class AlterIndexStatementSegment(BaseSegment):
+    """A `ALTER INDEX` statement."""
+
+    type = "alter_index_statement"
+    # ALTER INDEX <Index name> ON <table_name>
+    match_grammar: Matchable = Sequence(
+        "ALTER",
+        "INDEX",
+        OneOf(Ref("IndexReferenceSegment"), "ALL"),
+        "ON",
+        Ref("TableReferenceSegment"),
+        OneOf(
+            "DISABLE",
+            "PAUSE",
+            "ABORT"
+        )
     )

@@ -179,7 +179,6 @@ RESERVED_KEYWORDS = [
     "STATIC",
     "STATISTICS",
     "STNumPoints",
-    "SYSTEM_USER",
     "TABLE",
     "TABLESAMPLE",
     "TEXTSIZE",
@@ -491,5 +490,8 @@ UNRESERVED_KEYWORDS = [
     "ROUTE",
     "SEARCH",
     "SERVICE",
-    "SYMMETRIC"
+    "SYMMETRIC",
+    "SYSTEM_USER",
+    "PAUSE",
+    "ABORT"
 ]

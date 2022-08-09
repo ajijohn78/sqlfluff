@@ -2916,6 +2916,12 @@ class TruncateStatementSegment(BaseSegment):
     )
 
 
+class AlterIndexStatementSegment(BaseSegment):
+    """A `ALTER INDEX` statement."""
+
+    type = "alter_index_statement"
+
+
 class DropIndexStatementSegment(BaseSegment):
     """A `DROP INDEX` statement."""
 
@@ -3460,6 +3466,7 @@ class StatementSegment(BaseSegment):
         Ref("DropDatabaseStatementSegment"),
         Ref("CreateIndexStatementSegment"),
         Ref("DropIndexStatementSegment"),
+        Ref("AlterIndexStatementSegment"),
         Ref("CreateViewStatementSegment"),
         Ref("DeleteStatementSegment"),
         Ref("UpdateStatementSegment"),
