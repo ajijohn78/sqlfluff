@@ -139,7 +139,7 @@ ansi_dialect.set_lexer_matchers(
         StringLexer("crly_bracket_close", "}", CodeSegment),
         StringLexer("colon", ":", CodeSegment),
         StringLexer("semicolon", ";", CodeSegment),
-        RegexLexer("code", r"[0-9А-яa-zA-Z_]+", CodeSegment),
+        RegexLexer("code", r"[0-9А-яa-zA-Z_@]+", CodeSegment),
     ]
 )
 
@@ -282,7 +282,7 @@ ansi_dialect.add(
     NakedIdentifierSegment=SegmentGenerator(
         # Generate the anti template from the set of reserved keywords
         lambda dialect: RegexParser(
-            r"[А-яA-Z0-9_]*[А-яA-Z][А-яA-Z0-9_]*",
+            r"[А-яA-Z0-9_@]*[А-яA-Z@][А-яA-Z0-9_@]*",
             IdentifierSegment,
             type="naked_identifier",
             anti_template=r"^(" + r"|".join(dialect.sets("reserved_keywords")) + r")$",
@@ -291,7 +291,7 @@ ansi_dialect.add(
     VersionIdentifierSegment=RegexParser(r"[A-Z0-9_.]*", IdentifierSegment),
     ParameterNameSegment=RegexParser(r"[A-Z][A-Z0-9_]*", CodeSegment, type="parameter"),
     FunctionNameIdentifierSegment=RegexParser(
-        r"[A-Z][A-Z0-9_]*",
+        r"[A-Z@][A-Z0-9_@]*",
         CodeSegment,
         type="function_name_identifier",
     ),

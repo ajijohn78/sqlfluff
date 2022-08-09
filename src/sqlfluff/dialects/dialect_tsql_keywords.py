@@ -196,6 +196,7 @@ RESERVED_KEYWORDS = [
     "UNION",
     "UNIQUE",
     "UNPIVOT",
+    "UPDATE",
     "UPDATETEXT",
     "USE",
     "USER",
@@ -493,6 +494,5 @@ UNRESERVED_KEYWORDS = [
     "SYSTEM_USER",
     "PAUSE",
     "ABORT",
-    "UPDATE",
     "ROOT",
 ]
