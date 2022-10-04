@@ -582,7 +582,10 @@ class SelectClauseModifierSegment(BaseSegment):
 
     type = "select_clause_modifier"
     match_grammar = OneOf(
-        "DISTINCT",
+        Sequence(
+            "DISTINCT",
+            Ref("TopPercentGrammar", optional=True),
+        ),
         "ALL",
         Sequence(
             # https://docs.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql?view=sql-server-ver15
