@@ -3501,6 +3501,7 @@ class SetExpressionSegment(BaseSegment):
     # match grammar
     match_grammar = Sequence(
         Ref("NonSetSelectableGrammar"),
+        Ref("OrderByClauseSegment", optional=True),
         AnyNumberOf(
             Sequence(
                 Ref("SetOperatorSegment"),
