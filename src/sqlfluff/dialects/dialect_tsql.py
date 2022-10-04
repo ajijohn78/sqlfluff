@@ -473,6 +473,8 @@ class StatementSegment(ansi.StatementSegment):
             Ref("DeallocateCursorStatementSegment"),
             Ref("FetchCursorStatementSegment"),
             Ref("CreateTypeStatementSegment"),
+            Ref("CreateSynonymSegment"),
+            Ref("DropSynonymSegment")
         ],
         remove=[
             Ref("CreateModelStatementSegment"),
@@ -582,7 +584,10 @@ class SelectClauseModifierSegment(BaseSegment):
 
     type = "select_clause_modifier"
     match_grammar = OneOf(
-        "DISTINCT",
+        Sequence(
+            "DISTINCT",
+            Ref("TopPercentGrammar", optional=True),
+        ),
         "ALL",
         Sequence(
             # https://docs.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql?view=sql-server-ver15
@@ -1808,13 +1813,18 @@ class SetStatementSegment(BaseSegment):
                 Sequence(
                     Ref("ParameterNameSegment"),
                     Ref("AssignmentOperatorSegment"),
-                    Ref("ExpressionSegment"),
+                    OneOf(
+                        Ref("FunctionNameSegment"),
+                        Ref("ReservedKeywordFunctionNameSegment"),
+                        Ref("ExpressionSegment"),
+                        Ref("NextValueSequenceSegment"),
+                    )
                 ),
-                Sequence(
-                    Ref("ParameterNameSegment"),
-                    Ref("AssignmentOperatorSegment"),
-                    Ref("NextValueSequenceSegment"),
-                ),
+                # Sequence(
+                #     Ref("ParameterNameSegment"),
+                #     Ref("AssignmentOperatorSegment"),
+                #     Ref("NextValueSequenceSegment"),
+                # ),
             ),
         ),
         Dedent,
@@ -3217,6 +3227,7 @@ class UpdateStatementSegment(BaseSegment):
     match_grammar = Sequence(
         "UPDATE",
         Indent,
+        Ref("TopPercentGrammar", optional=True),
         OneOf(Ref("TableReferenceSegment"), Ref("AliasedTableReferenceGrammar")),
         Ref("PostTableExpressionGrammar", optional=True),
         Ref("SetClauseListSegment"),
@@ -3492,6 +3503,7 @@ class SetExpressionSegment(BaseSegment):
     # match grammar
     match_grammar = Sequence(
         Ref("NonSetSelectableGrammar"),
+        Ref("OrderByClauseSegment", optional=True),
         AnyNumberOf(
             Sequence(
                 Ref("SetOperatorSegment"),
@@ -3687,7 +3699,7 @@ class MergeInsertClauseSegment(BaseSegment):
             Bracketed(
                 Delimited(
                     AnyNumberOf(
-                        Ref("ExpressionSegment"),
+                        Ref("ExpressionSegment")
                     ),
                 ),
             ),
@@ -4335,6 +4347,11 @@ class ForJsonSegment(BaseSegment):
                 "AUTO",
                 "PATH"
             ),
+            Sequence(
+                'ROOT',
+                OptionallyBracketed(Ref("ExpressionSegment")),
+                optional=True
+            ),
             Ref.keyword("INCLUDE_NULL_VALUES", optional=True),
             Ref.keyword("WITHOUT_ARRAY_WRAPPER", optional=True),
             delimiter=Ref("CommaSegment"),
@@ -4371,12 +4388,9 @@ class OpenJsonSegment(BaseSegment):
                         Sequence(
                             Ref("SingleIdentifierGrammar"),  # Column name
                             Ref("DatatypeSegment"),  # Column type
-                            #OneOf(
-                            Ref("QuotedLiteralSegment", optional=True),
+                            Ref("QuotedLiteralSegmentOptWithN"),
+                            # Ref("QuotedLiteralSegment", optional=True),
                             Sequence("AS", "JSON", optional=True),
-                            #    optional=True,
-                            #)
-
                         ),
                     ),
                     delimiter=Ref("CommaSegment"),
@@ -4510,4 +4524,69 @@ class OpenQuerySegment(BaseSegment):
             Ref("CommaSegment"),
             Ref("QuotedLiteralSegment"),
         ),
+    )
+
+
+class ValuesClauseSegment(BaseSegment):
+    """A `VALUES` clause like in `INSERT`."""
+
+    type = "values_clause"
+    match_grammar: Matchable = Sequence(
+        OneOf("VALUE", "VALUES"),
+        Delimited(
+            Sequence(
+                # MySQL uses `ROW` in it's value statement.
+                # Currently SQLFluff doesn't differentiate between
+                # Values statement:
+                # https://dev.mysql.com/doc/refman/8.0/en/values.html
+                # and Values() function (used in INSERT statements):
+                # https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_values
+                # TODO: split these out in future.
+                Ref.keyword("ROW", optional=True),
+                Bracketed(
+                    Delimited(
+                        "DEFAULT",
+                        OneOf(
+                            Ref("FunctionNameSegment"),
+                            Ref("ReservedKeywordFunctionNameSegment"),
+                            Ref("ExpressionSegment"),
+                        ),
+                        ephemeral_name="ValuesClauseElements",
+                    )
+                ),
+            ),
+        ),
+    )
+
+
+class CreateSynonymSegment(BaseSegment):
+    """CREATE SYNONYM
+
+    https://docs.microsoft.com/en-us/sql/t-sql/functions/openquery-transact-sql?view=sql-server-ver16
+    """
+
+    type = "create_synonym_segment"
+    match_grammar = Sequence(
+        "CREATE",
+        "SYNONYM",
+        Ref("TableReferenceSegment"),
+        Sequence(
+            "FOR",
+            Ref("ObjectReferenceSegment")
+        )
+    )
+
+
+class DropSynonymSegment(BaseSegment):
+    """DROP SYNONYM
+
+    https://learn.microsoft.com/en-us/sql/t-sql/statements/drop-synonym-transact-sql?view=sql-server-ver16
+    """
+
+    type = "drop_synonym_segment"
+    match_grammar = Sequence(
+        "DROP",
+        "SYNONYM",
+        Ref("IfExistsGrammar", optional=True),
+        Ref("TableReferenceSegment")
     )

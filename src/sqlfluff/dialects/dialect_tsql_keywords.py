@@ -179,6 +179,7 @@ RESERVED_KEYWORDS = [
     "STATIC",
     "STATISTICS",
     "STNumPoints",
+    "SYNONYM",
     "TABLE",
     "TABLESAMPLE",
     "TEXTSIZE",
