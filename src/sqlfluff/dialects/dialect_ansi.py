@@ -533,6 +533,7 @@ ansi_dialect.add(
             OneOf(
                 Ref.keyword("LOOP"),
                 Ref.keyword("HASH"),
+                Ref.keyword("MERGE"),
                 optional=True
             ),
         ),
@@ -544,6 +545,7 @@ ansi_dialect.add(
                     OneOf(
                         Ref.keyword("LOOP"),
                         Ref.keyword("HASH"),
+                        Ref.keyword("MERGE"),
                         optional=True
                     ),
                 ),
