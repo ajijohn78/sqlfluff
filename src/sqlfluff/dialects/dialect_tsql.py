@@ -474,7 +474,8 @@ class StatementSegment(ansi.StatementSegment):
             Ref("FetchCursorStatementSegment"),
             Ref("CreateTypeStatementSegment"),
             Ref("CreateSynonymSegment"),
-            Ref("DropSynonymSegment")
+            Ref("DropSynonymSegment"),
+            Ref("EnableTriggerStatementSegment"),
         ],
         remove=[
             Ref("CreateModelStatementSegment"),
@@ -3983,6 +3984,28 @@ class DisableTriggerStatementSegment(BaseSegment):
         ),
     )
 
+
+class EnableTriggerStatementSegment(BaseSegment):
+    """Disable Trigger Statement.
+
+    https://learn.microsoft.com/en-us/sql/t-sql/statements/enable-trigger-transact-sql?view=sql-server-ver16
+    """
+
+    type = "enable_trigger"
+
+    match_grammar: Matchable = Sequence(
+        "ENABLE",
+        "TRIGGER",
+        OneOf(
+            Delimited(Ref("TriggerReferenceSegment")),
+            "ALL",
+        ),
+        Sequence(
+            "ON",
+            OneOf(Ref("ObjectReferenceSegment"), "DATABASE", Sequence("ALL", "SERVER")),
+            optional=True,
+        ),
+    )
 
 class LabelStatementSegment(BaseSegment):
     """Label Statement, for a GOTO statement.
