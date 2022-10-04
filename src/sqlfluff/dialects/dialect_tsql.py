@@ -3217,6 +3217,7 @@ class UpdateStatementSegment(BaseSegment):
     match_grammar = Sequence(
         "UPDATE",
         Indent,
+        Ref("TopPercentGrammar", optional=True),
         OneOf(Ref("TableReferenceSegment"), Ref("AliasedTableReferenceGrammar")),
         Ref("PostTableExpressionGrammar", optional=True),
         Ref("SetClauseListSegment"),
