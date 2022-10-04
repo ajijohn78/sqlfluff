@@ -1811,13 +1811,18 @@ class SetStatementSegment(BaseSegment):
                 Sequence(
                     Ref("ParameterNameSegment"),
                     Ref("AssignmentOperatorSegment"),
-                    Ref("ExpressionSegment"),
+                    OneOf(
+                        Ref("FunctionNameSegment"),
+                        Ref("ReservedKeywordFunctionNameSegment"),
+                        Ref("ExpressionSegment"),
+                        Ref("NextValueSequenceSegment"),
+                    )
                 ),
-                Sequence(
-                    Ref("ParameterNameSegment"),
-                    Ref("AssignmentOperatorSegment"),
-                    Ref("NextValueSequenceSegment"),
-                ),
+                # Sequence(
+                #     Ref("ParameterNameSegment"),
+                #     Ref("AssignmentOperatorSegment"),
+                #     Ref("NextValueSequenceSegment"),
+                # ),
             ),
         ),
         Dedent,
