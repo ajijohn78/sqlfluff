@@ -4339,6 +4339,11 @@ class ForJsonSegment(BaseSegment):
                 "AUTO",
                 "PATH"
             ),
+            Sequence(
+                'ROOT',
+                OptionallyBracketed(Ref("ExpressionSegment")),
+                optional=True
+            ),
             Ref.keyword("INCLUDE_NULL_VALUES", optional=True),
             Ref.keyword("WITHOUT_ARRAY_WRAPPER", optional=True),
             delimiter=Ref("CommaSegment"),
@@ -4375,12 +4380,9 @@ class OpenJsonSegment(BaseSegment):
                         Sequence(
                             Ref("SingleIdentifierGrammar"),  # Column name
                             Ref("DatatypeSegment"),  # Column type
-                            #OneOf(
-                            Ref("QuotedLiteralSegment", optional=True),
+                            Ref("QuotedLiteralSegmentOptWithN"),
+                            # Ref("QuotedLiteralSegment", optional=True),
                             Sequence("AS", "JSON", optional=True),
-                            #    optional=True,
-                            #)
-
                         ),
                     ),
                     delimiter=Ref("CommaSegment"),
