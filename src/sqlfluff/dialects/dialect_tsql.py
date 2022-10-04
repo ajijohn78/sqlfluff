@@ -3696,7 +3696,7 @@ class MergeInsertClauseSegment(BaseSegment):
             Bracketed(
                 Delimited(
                     AnyNumberOf(
-                        Ref("ExpressionSegment"),
+                        Ref("ExpressionSegment")
                     ),
                 ),
             ),
@@ -4520,5 +4520,37 @@ class OpenQuerySegment(BaseSegment):
             Ref("SingleIdentifierGrammar"),
             Ref("CommaSegment"),
             Ref("QuotedLiteralSegment"),
+        ),
+    )
+
+
+class ValuesClauseSegment(BaseSegment):
+    """A `VALUES` clause like in `INSERT`."""
+
+    type = "values_clause"
+    match_grammar: Matchable = Sequence(
+        OneOf("VALUE", "VALUES"),
+        Delimited(
+            Sequence(
+                # MySQL uses `ROW` in it's value statement.
+                # Currently SQLFluff doesn't differentiate between
+                # Values statement:
+                # https://dev.mysql.com/doc/refman/8.0/en/values.html
+                # and Values() function (used in INSERT statements):
+                # https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_values
+                # TODO: split these out in future.
+                Ref.keyword("ROW", optional=True),
+                Bracketed(
+                    Delimited(
+                        "DEFAULT",
+                        OneOf(
+                            Ref("FunctionNameSegment"),
+                            Ref("ReservedKeywordFunctionNameSegment"),
+                            Ref("ExpressionSegment"),
+                        ),
+                        ephemeral_name="ValuesClauseElements",
+                    )
+                ),
+            ),
         ),
     )
