@@ -473,6 +473,8 @@ class StatementSegment(ansi.StatementSegment):
             Ref("DeallocateCursorStatementSegment"),
             Ref("FetchCursorStatementSegment"),
             Ref("CreateTypeStatementSegment"),
+            Ref("CreateSynonymSegment"),
+            Ref("DropSynonymSegment")
         ],
         remove=[
             Ref("CreateModelStatementSegment"),
@@ -4554,4 +4556,37 @@ class ValuesClauseSegment(BaseSegment):
                 ),
             ),
         ),
+    )
+
+
+class CreateSynonymSegment(BaseSegment):
+    """CREATE SYNONYM
+
+    https://docs.microsoft.com/en-us/sql/t-sql/functions/openquery-transact-sql?view=sql-server-ver16
+    """
+
+    type = "create_synonym_segment"
+    match_grammar = Sequence(
+        "CREATE",
+        "SYNONYM",
+        Ref("TableReferenceSegment"),
+        Sequence(
+            "FOR",
+            Ref("ObjectReferenceSegment")
+        )
+    )
+
+
+class DropSynonymSegment(BaseSegment):
+    """DROP SYNONYM
+
+    https://learn.microsoft.com/en-us/sql/t-sql/statements/drop-synonym-transact-sql?view=sql-server-ver16
+    """
+
+    type = "drop_synonym_segment"
+    match_grammar = Sequence(
+        "DROP",
+        "SYNONYM",
+        Ref("IfExistsGrammar", optional=True),
+        Ref("TableReferenceSegment")
     )
