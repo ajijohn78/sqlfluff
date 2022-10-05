@@ -97,12 +97,12 @@ tsql_dialect.insert_lexer_matchers(
     [
         RegexLexer(
             "atsign",
-            r"[@][А-яa-zA-Z0-9_@]+",
+            r"[@][А-яa-zA-Z0-9_@#\?]+",
             CodeSegment,
         ),
         RegexLexer(
             "var_prefix",
-            r"[$][А-яa-zA-Z0-9_@]+",
+            r"[$][А-яa-zA-Z0-9_@#\?]+",
             CodeSegment,
         ),
         RegexLexer(
@@ -114,7 +114,7 @@ tsql_dialect.insert_lexer_matchers(
         RegexLexer("single_quote_with_n", r"N'([^']|'')*'", CodeSegment),
         RegexLexer(
             "hash_prefix",
-            r"[#][#]?[А-яa-zA-Z0-9_@]+",
+            r"[#][#]?[А-яa-zA-Z0-9_@#\?]+",
             CodeSegment,
         ),
     ],
@@ -226,7 +226,7 @@ tsql_dialect.replace(
     NakedIdentifierSegment=SegmentGenerator(
         # Generate the anti template from the set of reserved keywords
         lambda dialect: RegexParser(
-            r"[А-яA-Z_@][А-яA-Z0-9_@$#]*",
+            r"[А-яA-Z_@#\?][А-яA-Z0-9_@$#]*",
             CodeSegment,
             name="naked_identifier",
             type="identifier",
@@ -263,7 +263,7 @@ tsql_dialect.replace(
         Ref("SystemVariableSegment"),
     ),
     ParameterNameSegment=RegexParser(
-        r"@[А-яA-Za-z0-9_@]+", CodeSegment, name="parameter", type="parameter"
+        r"@[А-яA-Za-z0-9_@#\?]+", CodeSegment, name="parameter", type="parameter"
     ),
     FunctionParameterGrammar=Sequence(
         Ref("ParameterNameSegment", optional=True),
@@ -275,7 +275,7 @@ tsql_dialect.replace(
         # Generate the anti template from the set of reserved keywords
         # minus the function names that are reserved words.
         lambda dialect: RegexParser(
-            r"[A-Z@][A-Z0-9_@]*|\[[A-Z@][A-Z0-9_@]*\]",
+            r"[A-Z_@#\?][A-Z0-9_@#\?]*|\[[A-Z_@#\?][A-Z0-9_@#\?]*\]",
             CodeSegment,
             name="function_name_identifier",
             type="function_name_identifier",
