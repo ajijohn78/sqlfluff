@@ -3440,6 +3440,11 @@ class TableHintSegment(BaseSegment):
                 OneOf(Ref("IndexReferenceSegment"), Ref("NumericLiteralSegment")),
             ),
         ),
+        Sequence(
+            "INDEX",
+            Ref("EqualsSegment"),
+            Ref("IndexReferenceSegment"),
+        ),
         "KEEPIDENTITY",
         "KEEPDEFAULTS",
         Sequence(
