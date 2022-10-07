@@ -1,0 +1,10 @@
+stages:
+    - deploy_online_linter
+
+deploy_online_linter:
+  stage: deploy_online_linter
+  rules: 
+      - if: $CI_COMMIT_BRANCH == 'master'
+  trigger:
+    project: Databases/library/sql-linter-online
+    strategy: depend
