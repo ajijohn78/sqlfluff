@@ -15,7 +15,7 @@ deploy_online_linter:
 build_sql-linter:
   stage: build_sql-linter
   rules: 
-      - if: $CI_COMMIT_BRANCH == 'master'
+      - if: $CI_COMMIT_BRANCH == 'main'
   trigger:
     project: Databases/library/sql-linter
     branch: master
