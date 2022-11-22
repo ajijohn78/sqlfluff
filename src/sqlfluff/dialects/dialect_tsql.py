@@ -4021,7 +4021,8 @@ class LabelStatementSegment(BaseSegment):
     type = "label_segment"
 
     match_grammar: Matchable = Sequence(
-        Ref("NakedIdentifierSegment"), Ref("ColonSegment"), allow_gaps=False
+#        Ref("NakedIdentifierSegment"), Ref("ColonSegment"), allow_gaps=False
+        Ref("SingleIdentifierGrammar"), Ref("ColonSegment"), allow_gaps=False
     )
 
 
